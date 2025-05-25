@@ -1,10 +1,13 @@
 spring:
+  config:
+    import: "classpath:application-secret.yml"
+
   application:
     name: LoginProject
   datasource:
     url: jdbc:oracle:thin:@localhost:1521/XEPDB1
     username: testuser
-    password: 1234
+    password: ${DB_PASSWORD}
     driver-class-name: oracle.jdbc.driver.OracleDriver
   jpa:
     hibernate:
