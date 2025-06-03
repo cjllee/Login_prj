@@ -1,6 +1,6 @@
-package io.cj.login_projec.repository;
+package io.cj.login_project.repository;
 
-import io.cj.login_projec.entity.EmailVerification;
+import io.cj.login_project.entity.EmailVerification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package io.cj.login_projec.entity;
+package io.cj.login_project.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

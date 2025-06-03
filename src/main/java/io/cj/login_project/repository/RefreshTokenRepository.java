@@ -1,6 +1,6 @@
-package io.cj.login_projec.repository;
+package io.cj.login_project.repository;
 
-import io.cj.login_projec.entity.RefreshToken;
+import io.cj.login_project.entity.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

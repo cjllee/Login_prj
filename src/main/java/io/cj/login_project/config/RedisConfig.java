@@ -1,4 +1,4 @@
-package io.cj.login_projec.config;
+package io.cj.login_project.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
