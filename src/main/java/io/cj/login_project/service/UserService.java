@@ -22,6 +22,7 @@ public class UserService {
     }
 
     public void saveUser(User user) {
+        // 비밀번호를 평문으로 저장
         userRepository.save(user);
     }
 }

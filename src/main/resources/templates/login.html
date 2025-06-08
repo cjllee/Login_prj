@@ -14,14 +14,15 @@
     </style>
 </head>
 <body>
-<h1>로그인</h1>
-<form th:action="@{/login}" method="post">
-    <label for="email">이메일:</label>
-    <input type="email" id="email" name="email" required>
-    <label for="password">비밀번호:</label>
-    <input type="password" id="password" name="password" required>
-    <button type="submit">로그인</button>
+<h2>로그인</h2>
+<form action="/login" method="post">
+    <div th:if="${param.error}">
+        <p style="color:red">이메일 또는 비밀번호가 잘못되었습니다.</p>
+    </div>
+    이메일: <input type="email" name="username" required><br>
+    비밀번호: <input type="password" name="password" required><br>
+    <input type="submit" value="로그인">
 </form>
-<p>계정이 없으신가요? <a th:href="@{/signup}">회원가입</a></p>
+<p>계정이 없으신가요? <a href="/signup">회원가입</a></p>
 </body>
 </html>
