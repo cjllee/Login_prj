@@ -1,5 +1,6 @@
 package io.cj.login_project.config;
 
+import io.cj.login_project.service.CustomOAuth2UserService;
 import io.cj.login_project.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,23 +18,34 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/send-verification-code").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/welcome", true) // 항상 welcome으로 리다이렉트
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                        .permitAll()
-                )
-                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests()
+                .requestMatchers("/login", "/signup", "/send-verification-code").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/welcome", true)
+                .permitAll()
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .defaultSuccessUrl("/welcome", true)
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login")
+                .permitAll()
+                .and()
+                .csrf()
+                .disable()
                 .userDetailsService(customUserDetailsService);
 
         return http.build();
@@ -41,6 +53,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // 평문 비밀번호 비교
+        return NoOpPasswordEncoder.getInstance();
     }
 }

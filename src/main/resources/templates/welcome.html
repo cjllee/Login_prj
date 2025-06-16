@@ -12,6 +12,7 @@
 <body>
 <h1>환영합니다, </h1>
 <p>로그인에 성공하셨습니다.</p>
+<p>당신의 JWT 토큰: <span th:text="${token}"></span></p>
 <a th:href="@{/logout}">로그아웃</a>
 </body>
 </html>
