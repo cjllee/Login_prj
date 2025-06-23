@@ -3,6 +3,7 @@ package io.cj.login_project.controller;
 import io.cj.login_project.service.UserService;
 import io.cj.login_project.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,7 @@ public class LoginController {
     }
 
     @GetMapping("/welcome")
+    @PreAuthorize("hasRole('ADMIN')") // Controller-level role check
     public String welcome(Model model, Authentication authentication) {
         String username;
         List<String> roles = new ArrayList<>();

@@ -33,4 +33,8 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, secret.getBytes()) // 바이트 배열로 변환
                 .compact();
     }
+
+    public String getSecret() {
+        return secret;
+    }
 }

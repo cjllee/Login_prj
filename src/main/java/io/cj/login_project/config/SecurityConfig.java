@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,11 +22,15 @@ public class SecurityConfig {
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/login", "/signup", "/send-verification-code").permitAll()
+                .requestMatchers("/welcome").hasRole("ADMIN") // Only ROLE_ADMIN can access /welcome
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -46,7 +51,8 @@ public class SecurityConfig {
                 .and()
                 .csrf()
                 .disable()
-                .userDetailsService(customUserDetailsService);
+                .userDetailsService(customUserDetailsService)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
 
         return http.build();
     }
