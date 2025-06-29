@@ -1,5 +1,6 @@
 package io.cj.login_project.controller;
 
+import io.cj.login_project.service.RefreshTokenService;
 import io.cj.login_project.service.UserService;
 import io.cj.login_project.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class LoginController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
     @GetMapping("/login")
     public String loginForm() {
         return "login";
@@ -35,23 +39,22 @@ public class LoginController {
     }
 
     @GetMapping("/welcome")
-    @PreAuthorize("hasRole('ADMIN')") // Controller-level role check
+    @PreAuthorize("hasRole('ADMIN')")
     public String welcome(Model model, Authentication authentication) {
         String username;
         List<String> roles = new ArrayList<>();
 
-        // OAuth2 사용자 또는 폼 로그인 사용자 처리
         if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
             DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
             username = oAuth2User.getAttribute("kakao_account") != null
                     ? ((java.util.Map<String, String>) oAuth2User.getAttribute("kakao_account")).get("email")
-                    : oAuth2User.getName(); // 이메일 또는 기본 이름
+                    : oAuth2User.getName();
             for (GrantedAuthority authority : oAuth2User.getAuthorities()) {
                 roles.add(authority.getAuthority());
             }
         } else if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            username = userDetails.getUsername(); // 이메일
+            username = userDetails.getUsername();
             for (GrantedAuthority authority : userDetails.getAuthorities()) {
                 roles.add(authority.getAuthority());
             }
@@ -59,11 +62,15 @@ public class LoginController {
             throw new IllegalStateException("Unknown principal type: " + authentication.getPrincipal().getClass());
         }
 
-        // JWT 토큰 생성
+        // JWT 액세스 토큰 생성
         String token = jwtUtil.generateToken(username, roles);
+
+        // 리프레시 토큰 생성 및 Redis에 저장
+        String refreshToken = refreshTokenService.generateRefreshToken(username);
 
         // 모델에 토큰 추가
         model.addAttribute("token", token);
+        model.addAttribute("refreshToken", refreshToken);
         return "welcome";
     }
 }

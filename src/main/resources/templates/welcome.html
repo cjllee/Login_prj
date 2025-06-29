@@ -1,18 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>환영 페이지</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
-        a { color: #007BFF; text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .token-box {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #e8f0fe;
+            border-radius: 5px;
+            word-break: break-all;
+        }
+        .logout-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .logout-link:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
-<h1>환영합니다, </h1>
-<p>로그인에 성공하셨습니다.</p>
-<p>당신의 JWT 토큰: <span th:text="${token}"></span></p>
-<a th:href="@{/logout}">로그아웃</a>
+<div class="container">
+    <h1>환영합니다!</h1>
+    <p>로그인에 성공하셨습니다.</p>
+    <div class="token-box">
+        <strong>당신의 JWT 토큰:</strong>
+        <p th:text="${token}"></p>
+    </div>
+    <div class="token-box">
+        <strong>당신의 리프레시 토큰:</strong>
+        <p th:text="${refreshToken}"></p>
+    </div>
+    <a class="logout-link" th:href="@{/logout}">로그아웃</a>
+</div>
 </body>
 </html>

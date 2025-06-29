@@ -55,6 +55,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	// Oracle 데이터베이스 연결을 위한 JDBC 드라이버
 	implementation 'com.oracle.database.jdbc:ojdbc8:23.2.0.0'
+	// Springdoc OpenAPI를 사용해 Swagger UI와 OpenAPI 문서 생성 지원
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	// 테스트를 위한 Spring Boot 테스트 프레임워크 (JUnit, Mockito 등 포함)
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// Spring Security 테스트를 지원 (시큐리티 관련 테스트 유틸리티 제공)
